@@ -17,15 +17,32 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 export default class Drawer extends React.Component {
   render() {
-    const {navigation} = this.props;
     return (
       <View style={styles.container}>
         <View style={styles.top}>
-          <Image
-            onPress={() => this.props.navigation.navigate('Profile')}
-            source={require('../assets/images/avatar.jpeg')}
-            style={styles.photo}
-          />
+          <TouchableOpacity
+            onPress={() =>
+              Navigation.push(this.props.componentId, {
+                component: {
+                  name: 'navigation.twitter.ProfileScreen',
+                  passProps: {
+                    text: 'Pushed screen',
+                  },
+                  options: {
+                    topBar: {
+                      title: {
+                        text: 'Pushed screen title',
+                      },
+                    },
+                  },
+                },
+              })
+            }>
+            <Image
+              source={require('../../assets/images/avatar.jpeg')}
+              style={styles.photo}
+            />
+          </TouchableOpacity>
           <Text style={styles.userName}> Asmaa </Text>
           <Text style={styles.userHandle}>@asma </Text>
 
@@ -41,25 +58,7 @@ export default class Drawer extends React.Component {
           </View>
         </View>
         <ScrollView>
-          <TouchableOpacity
-            onPress={() =>
-              Navigation.push(this.props.componentId, {
-                component: {
-                  name: 'navigation.playground.ProfileScreen',
-                  passProps: {
-                    text: 'Pushed screen',
-                  },
-                  options: {
-                    topBar: {
-                      title: {
-                        text: 'Pushed screen title',
-                      },
-                    },
-                  },
-                },
-              })
-            }
-            style={[styles.list, styles.firstList]}>
+          <TouchableOpacity style={[styles.list, styles.firstList]}>
             <View>
               <FontAwesome
                 style={styles.icon}
@@ -70,9 +69,7 @@ export default class Drawer extends React.Component {
               <Text style={styles.text}> Profile </Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => console.log('navigate')}
-            style={styles.list}>
+          <TouchableOpacity style={styles.list}>
             <View>
               <MaterialCommunityIcons
                 style={styles.icon}
@@ -91,12 +88,7 @@ export default class Drawer extends React.Component {
                 size={20}
                 color="rgb(136, 153, 166)"
               />
-              <Text
-                onPress={() => navigation.navigate('Profile')}
-                style={styles.text}>
-                {' '}
-                Bookmarks{' '}
-              </Text>
+              <Text style={styles.text}> Bookmarks </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
@@ -114,18 +106,12 @@ export default class Drawer extends React.Component {
                 size={20}
                 color="rgb(136, 153, 166)"
               />
-              <Text
-                onPress={() => navigation.navigate('Profile')}
-                style={styles.text}>
-                {' '}
-                Moments{' '}
-              </Text>
+              <Text style={styles.text}> Moments </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity style={styles.list}>
             <View>
               <Text
-                onPress={() => navigation.navigate('Profile')}
                 style={[
                   styles.text,
                   {
@@ -139,7 +125,6 @@ export default class Drawer extends React.Component {
           <TouchableOpacity style={styles.list}>
             <View>
               <Text
-                onPress={() => navigation.navigate('Profile')}
                 style={[
                   styles.text,
                   {
