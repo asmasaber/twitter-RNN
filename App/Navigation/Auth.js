@@ -1,5 +1,5 @@
 import {Navigation} from 'react-native-navigation';
-import {colors} from '../Theme';
+import {Colors} from '../Theme';
 
 export default () => {
   Navigation.setRoot({
@@ -28,6 +28,17 @@ export default () => {
             visible: true,
             elevation: 0,
             noBorder: true,
+            rightButtons: [
+              {
+                id: 'navigation.twitter.RightButton',
+                component: {
+                  name: 'navigation.twitter.RightButton',
+                  passProps: {
+                    rootId: 'authStack',
+                  },
+                },
+              },
+            ],
             title: {
               component: {
                 name: 'navigation.twitter.topBar',
@@ -35,40 +46,11 @@ export default () => {
               },
             },
             backButton: {
-              color: colors.primary,
+              color: Colors.primary,
             },
           },
         },
       },
     },
   });
-};
-
-export const signupStack = {
-  stack: {
-    id: 'signupStack',
-    children: [
-      {
-        component: {
-          name: 'navigation.twitter.SignupScreen',
-        },
-      },
-    ],
-    options: {
-      topBar: {
-        visible: true,
-        elevation: 0,
-        noBorder: true,
-        title: {
-          component: {
-            name: 'navigation.twitter.topBar',
-            aligment: 'center',
-            passProps: {
-              signupStack: true,
-            },
-          },
-        },
-      },
-    },
-  },
 };

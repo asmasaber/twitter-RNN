@@ -1,12 +1,12 @@
 import {StyleSheet} from 'react-native';
-import theme, {colors} from '../../Theme';
+import theme, {Colors} from '../../../Theme';
 export default StyleSheet.create({
   ...theme,
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colors.primary,
+    backgroundColor: Colors.primary,
   },
   logo: {
     alignSelf: 'center',
@@ -17,8 +17,8 @@ export default StyleSheet.create({
     backgroundColor: 'white',
   },
   headerMargin: {
-    marginTop: 10,
-    marginLeft: 30,
+    marginTop: 20,
+    marginLeft: 35,
   },
   title: {
     marginTop: 10,
@@ -26,7 +26,7 @@ export default StyleSheet.create({
   },
   titleMargin: {
     margin: 50,
-    marginBottom: 20,
+    marginBottom: 10,
   },
   inputArea: {
     padding: 20,
@@ -37,24 +37,25 @@ export default StyleSheet.create({
     flexDirection: 'row',
     paddingRight: 40,
     paddingLeft: 40,
-    paddingTop: 10,
+    // paddingTop: 10,
     // paddingBottom: 15,
   },
   checkBox: {
     justifyContent: 'center',
     alignSelf: 'center',
-    color: colors.primary,
+    color: Colors.primary,
   },
   center: {
     justifyContent: 'center',
   },
   trems: {
-    width: '94%',
-    color: colors.secondaryText,
+    width: '98%',
+    color: Colors.secondaryText,
+    fontSize: 15,
   },
   termsHint: {
     padding: 40,
-    color: colors.secondaryText,
+    color: Colors.secondaryText,
   },
   button: {
     paddingTop: 5,
@@ -62,7 +63,7 @@ export default StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     margin: 10,
-    backgroundColor: colors.primary,
+    backgroundColor: Colors.primary,
     borderRadius: 50,
     borderWidth: 1,
     borderColor: '#1da1f2',
@@ -74,21 +75,11 @@ export default StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15,
     margin: 10,
-    backgroundColor: colors.primary,
+    backgroundColor: Colors.primary,
     borderRadius: 50,
     borderWidth: 1,
     borderColor: '#1da1f2',
     alignSelf: 'flex-end',
     opacity: 0.6,
-  },
-  link: {
-    color: colors.secondaryText,
-    textAlign: 'center',
-  },
-  buttonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
   },
 });

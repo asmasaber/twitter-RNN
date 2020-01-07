@@ -13,6 +13,10 @@ const {Types, Creators} = createActions(
     loginSuccess: ['data'],
     loginFailure: ['error'],
 
+    signup: ['data'],
+    signupSuccess: ['data'],
+    signupFailure: ['error'],
+
     reset: null,
   },
   {
@@ -39,14 +43,12 @@ export const getToken = state => state.merge({loading: true});
 export const getTokenSuccess = (state, {data}) =>
   state.merge({
     loading: false,
-    error: null,
     token: data,
   });
 
-export const getTokenFailure = state =>
-  state.merge({loading: false, error: true});
+export const getTokenFailure = state => state.merge({loading: false});
 
-export const login = state => state.merge({loading: true});
+export const login = state => state.merge({loading: true, error: null});
 
 export const loginSuccess = (state, {data}) =>
   state.merge({
@@ -56,6 +58,18 @@ export const loginSuccess = (state, {data}) =>
   });
 
 export const loginFailure = (state, {error}) =>
+  state.merge({loading: false, error});
+
+export const signup = state => state.merge({loading: true, error: null});
+
+export const signupSuccess = (state, {data}) =>
+  state.merge({
+    loading: false,
+    error: null,
+    token: data,
+  });
+
+export const signupFailure = (state, {error}) =>
   state.merge({loading: false, error});
 
 export const reset = () => INITIAL_STATE;
@@ -70,4 +84,8 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.LOGIN]: login,
   [Types.LOGIN_SUCCESS]: loginSuccess,
   [Types.LOGIN_FAILURE]: loginFailure,
+
+  [Types.SIGNUP]: signup,
+  [Types.SIGNUP_SUCCESS]: signupSuccess,
+  [Types.SIGNUP_FAILURE]: signupFailure,
 });

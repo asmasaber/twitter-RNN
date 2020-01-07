@@ -1,9 +1,9 @@
 import {put, call} from 'redux-saga/effects';
 
-import AuthActions from '../Actions/Auth';
+import AuthActions from '~/Redux/Actions/Auth';
 
-import storage from '../../Serives/localStorage';
-import Api from '../../Serives/API';
+import storage from '~/Services/localStorage';
+import Api from '~/Services/API';
 
 export default {
   *getToken() {
@@ -16,11 +16,18 @@ export default {
   },
   *login({data}) {
     const res = yield call(Api.login, data);
-    console.log('ressss', res);
     if (res.ok) {
       yield put(AuthActions.loginSuccess(res.data.token));
     } else {
       yield put(AuthActions.loginFailure(res.data.error));
+    }
+  },
+  *signup({data}) {
+    const res = yield call(Api.signup, data);
+    if (res.ok) {
+      yield put(AuthActions.signupSuccess(res.data.token));
+    } else {
+      yield put(AuthActions.signupFailure(res.data.error));
     }
   },
 };

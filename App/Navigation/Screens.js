@@ -1,24 +1,22 @@
 import {Navigation} from 'react-native-navigation';
 
-import Loading from '../Contianers/Auth/Loading';
-import Login from '../Contianers/Auth/Login';
-import Signup from '../Contianers/Auth/Signup';
-import SignupTerms from '../Contianers/Auth/Signup/Terms';
-import SignupSubmit from '../Contianers/Auth/Signup/Submit';
+import Loading from '~/Contianers/Auth/Loading';
+import Login from '~/Contianers/Auth/Login';
+import Signup from '~/Contianers/Auth/Signup';
+import SignupTerms from '~/Contianers/Auth/Signup/Terms';
 
-import Drawer from '../Components/Layout/Drawer';
-import TopBar from '../Components/Layout/TopBar';
-import LoadingIndicator from '../Components/Layout/Loading';
-import Feeds from '../Contianers/Feeds';
-import DM from '../Contianers/Feeds/DM';
-import Search from '../Contianers/Feeds/Search';
-import Notifications from '../Contianers/Feeds/Notifications';
-
-import Profile from '../Contianers/SIdeMenu/Profile';
+import Drawer from '~/Components/Form/Layout/Drawer';
+import TopBar from '~/Components/Form/Layout/TopBar';
+import RightButton from '~/Components/Form/Layout/RightButton';
+import LoadingIndicator from '~/Components/Form/Layout/Loading';
+import Feeds from '~/Contianers/App/Feeds';
+import DM from '~/Contianers/App/Feeds/DM';
+import Search from '~/Contianers/App/Feeds/Search';
+import Notifications from '~/Contianers/App/Feeds/Notifications';
 
 import {Provider} from 'react-redux';
 
-import {store} from '../Redux/CreateStore';
+import {store} from '~/Redux/CreateStore';
 
 export default () => {
   Navigation.registerComponentWithRedux(
@@ -32,6 +30,11 @@ export default () => {
   Navigation.registerComponent(
     'navigation.twitter.LoadingIndicator',
     () => LoadingIndicator,
+  );
+
+  Navigation.registerComponent(
+    'navigation.twitter.RightButton',
+    () => RightButton,
   );
 
   Navigation.registerComponentWithRedux(
@@ -55,13 +58,6 @@ export default () => {
     store,
   );
 
-  Navigation.registerComponentWithRedux(
-    'navigation.twitter.SignupSubmitScreen',
-    () => SignupSubmit,
-    Provider,
-    store,
-  );
-
   Navigation.registerComponent('navigation.twitter.Drawer', () => Drawer);
   Navigation.registerComponent('navigation.twitter.FeedsScreen', () => Feeds);
   Navigation.registerComponent('navigation.twitter.SearchScreen', () => Search);
@@ -69,10 +65,5 @@ export default () => {
   Navigation.registerComponent(
     'navigation.twitter.NotificationsScreen',
     () => Notifications,
-  );
-
-  Navigation.registerComponent(
-    'navigation.twitter.ProfileScreen',
-    () => Profile,
   );
 };

@@ -29,7 +29,8 @@ export default {
   },
   h6: {},
 };
-export const colors = {
+export const Colors = {
   primary: '#1ba0f1',
+  secondary: '#e0e1e3',
   secondaryText: '#657786',
 };
