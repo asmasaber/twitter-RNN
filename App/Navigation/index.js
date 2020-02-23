@@ -6,7 +6,7 @@ export default () => {
   Navigation.setRoot({
     root: {
       component: {
-        name: 'navigation.twitter.Loading',
+        name: 'Auth.Check',
       },
     },
   });

@@ -1,10 +1,16 @@
 export default class FieldState {
-  constructor(data) {
+  constructor(args) {
+    const {validateOn, type, value, ...restOptions} = args;
+
     return {
-      value: '',
+      showErrors: false,
       validators: [],
-      isValid: true,
-      ...data,
+      validateOn: [...(validateOn || []), 'value'],
+      errors: [],
+      value: type(value),
+      type,
+      UIOnly: false,
+      ...restOptions,
     };
   }
 }

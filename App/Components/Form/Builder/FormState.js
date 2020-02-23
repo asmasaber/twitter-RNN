@@ -1,14 +1,17 @@
+import reduce from 'lodash/reduce';
+import set from 'lodash/set';
+
 import FieldState from './FieldState';
 
-export default class FormState {
-  constructor(data) {
-    const form = {};
-    for (var key in data) {
-      if (Object.prototype.hasOwnProperty.call(data, key)) {
-        const field = data[key];
-        form[key] = new FieldState(field);
-      }
-    }
-    return form;
+export default class Schema {
+  constructor(formDefinition) {
+    const formState = reduce(
+      formDefinition,
+      (form, options, name) =>
+        set(form, name, new FieldState({name, ...options})),
+      {},
+    );
+
+    return formState;
   }
 }

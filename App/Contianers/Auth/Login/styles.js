@@ -13,6 +13,8 @@ export default StyleSheet.create({
   inputArea: {
     padding: 20,
     flexDirection: 'column',
+    justifyContent: 'center',
+
     flex: 1,
   },
   center: {

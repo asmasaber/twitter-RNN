@@ -22,29 +22,53 @@ export default class Input extends React.Component {
 
   onFocus = () => {
     this.focused = true;
+    this.props.onFocus && this.props.onFocus();
   };
 
   onBlur = () => {
     this.focused = false;
-  };
+    this.props.onBlur && this.props.onBlur();
 
+  };
+  
   render() {
-    const { title, hint, secureTextEntry, value, error, showError } = this.props;
+    const {
+      title, 
+      hint, 
+      secureTextEntry, 
+      value, 
+      error, 
+      showError, 
+      name ,
+      keyboardType,
+      multiline,
+      placeholder,
+      onPress
+    } = this.props;
+
     return (
       <View style={styles.root}>
         {title && <Text style={styles.title}>{title}</Text>}
         <View style={[
           styles.container, 
+          multiline ? styles.multiline : {},
           this.focused ? styles.focused: {}, 
           error && showError ? styles.errorInput : {},
           this.focused && error && showError ? styles.focusedError : {}
           ]}
         >
           <TextInput
-            style={styles.input}
+            value={value}
+            keyboardType={keyboardType}
+            multiline={multiline}
+            placeholder={placeholder}
+            style={[
+              styles.input,
+              multiline ? styles.multiline : {},
+            ]}
             onFocus={this.onFocus}
             onBlur={this.onBlur}
-            {...this.props}
+            onChangeText={text => this.props.onChange(name, text)}
             secureTextEntry={secureTextEntry && !this.showPassword}
           />
           {secureTextEntry && (

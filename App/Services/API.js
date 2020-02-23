@@ -1,3 +1,4 @@
+import feedTemplate from './feedTemplate';
 export default {
   login: data => {
     return new Promise((resolve, reject) => {
@@ -36,5 +37,48 @@ export default {
         });
       }, 5000);
     });
+  },
+  feeds: {
+    get: data => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const {pageSize} = data;
+          resolve({
+            ok: true,
+            data: {
+              items: Array.apply(null, Array(pageSize)).map(function() {
+                return feedTemplate();
+              }),
+            },
+          });
+        }, 0);
+      });
+    },
+  },
+  profile: {
+    get: data => {
+      return new Promise((resolve, reject) => {
+        resolve({
+          ok: true,
+          data: {
+            name: 'Asma Saber',
+            bio: 'Frontend Devloper',
+            location: 'Assyt',
+            website: '',
+            dateOfBirth: '',
+          },
+        });
+      });
+    },
+    post: data => {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve({
+            ok: true,
+            data,
+          });
+        }, 1000);
+      });
+    },
   },
 };

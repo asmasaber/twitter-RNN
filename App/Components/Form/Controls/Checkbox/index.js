@@ -1,8 +1,8 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {observable, computed} from 'mobx';
 import {observer} from 'mobx-react';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import styles from './styles';
 
@@ -11,11 +11,11 @@ export default class Checkbox extends React.Component {
   @observable checked = false || this.props.value;
 
   @computed get icon() {
-    return this.checked? 'checksquare' : 'checksquareo';
+    return this.checked? 'checkbox-marked' : 'border-all-variant';
   }
 
   @computed get size() {
-    return this.props.size || 22;
+    return this.props.size || 24;
   }
 
   handleChange = () => {
@@ -27,7 +27,7 @@ export default class Checkbox extends React.Component {
   render() {
     return (
     <TouchableOpacity onPress={this.handleChange} style={[styles.wrapper, this.props.style]}>
-      {<AntDesign name={this.icon} style={styles.icon} size={this.size} />}
+      {<MaterialCommunityIcons name={this.icon} style={styles.icon} size={this.size} />}
     </TouchableOpacity>);
   }
 }

@@ -9,22 +9,21 @@ const {Types, Creators} = createActions(
     register: ['id'],
 
     get: ['id', 'data'],
+    getLatest: ['id', 'data'],
     getSucceeded: ['id', 'data'],
-    getFailed: ['id', 'error'],
+    getFailed: ['id', 'errors'],
 
     post: ['id', 'data'],
     postSucceeded: ['id', 'data'],
-    postFailed: ['id', 'error'],
+    postFailed: ['id', 'errors'],
 
     put: ['id', 'data'],
     putSucceeded: ['id', 'data'],
-    putFailed: ['id', 'data'],
+    putFailed: ['id', 'errors'],
 
     delete: ['id', 'data'],
     deleteSucceeded: ['id', 'data'],
-    deleteFailed: ['id', 'error'],
-
-    update: ['id', 'data'],
+    deleteFailed: ['id', 'errors'],
 
     reset: ['id'],
     resetProp: ['id', 'prop'],
@@ -46,8 +45,7 @@ export const INITIAL_STATE_SINGLE = Immutable({
   updated: false,
   deleted: false,
   loading: false,
-  error: null,
-  data: {},
+  errors: null,
   // Store responses
   responseFromGet: null,
   responseFromPost: null,
@@ -78,106 +76,92 @@ export const register = (state, {id}) =>
 export const get = (state, {id}) =>
   updateState(state, id, {
     loading: true,
-    error: null,
+    errors: null,
     responseFromGet: null,
   });
 
 export const getSucceeded = (state, {id, data}) =>
   updateState(state, id, {
     loading: false,
-    error: null,
+    errors: null,
     received: true,
     responseFromGet: data || INITIAL_STATE_SINGLE.responseFromGet,
   });
 
-export const getFailed = (state, {id, error}) =>
+export const getFailed = (state, {id, errors}) =>
   updateState(state, id, {
     loading: false,
     received: true,
-    error,
+    errors,
   });
 
 export const post = (state, {id}) =>
   updateState(state, id, {
     loading: true,
-    error: null,
+    errors: null,
     responseFromPost: null,
   });
 
 export const postSucceeded = (state, {id, data}) =>
   updateState(state, id, {
     loading: false,
-    error: null,
+    errors: null,
     posted: true,
     responseFromPost: data || INITIAL_STATE_SINGLE.responseFromPost,
   });
 
-export const postFailed = (state, {id, error}) =>
+export const postFailed = (state, {id, errors}) =>
   updateState(state, id, {
     loading: false,
     posted: true,
-    error: error || {},
+    errors,
   });
 
 export const put = (state, {id}) =>
   updateState(state, id, {
     loading: true,
-    error: null,
-    responseFromUpdate: null,
+    errors: null,
+    responseFromPut: null,
   });
 
 export const putSucceeded = (state, {id, data}) =>
   updateState(state, id, {
     loading: false,
-    error: null,
+    errors: null,
     updated: true,
-    responseFromUpdate: data || INITIAL_STATE_SINGLE.responseFromUpdate,
+    responseFromPut: data || INITIAL_STATE_SINGLE.responseFromPut,
   });
 
-export const putFailed = (state, {id, error}) =>
+export const putFailed = (state, {id, errors}) =>
   updateState(state, id, {
     loading: false,
     updated: true,
-    error: error || {},
+    errors,
   });
 
-export const remove = (state, {id}) =>
+export const deleted = (state, {id}) =>
   updateState(state, id, {
     loading: true,
-    error: null,
+    errors: null,
     responseFromDelete: null,
   });
 
-export const removeSucceeded = (state, {id, data}) =>
+export const deleteSucceeded = (state, {id, data}) =>
   updateState(state, id, {
     loading: false,
-    error: null,
+    errors: null,
     deleted: true,
     responseFromDelete: data || INITIAL_STATE_SINGLE.responseFromDelete,
   });
 
-export const removeFailed = (state, {id, error}) =>
+export const deleteFailed = (state, {id, errors}) =>
   updateState(state, id, {
     loading: false,
     deleted: true,
-    error,
+    errors,
   });
 
-export const update = (state, {id, data}) =>
-  updateState(state, id, {
-    data: {
-      ...state.byId[id].data,
-      ...data,
-    },
-  });
-
-export const reset = (state, {id}) =>
-  state.merge({
-    byId: {
-      ...state.byId,
-      [id]: null,
-    },
-  });
+export const reset = (state, {id}) => updateState(state, id, null);
 
 export const resetProp = (state, {id, prop}) =>
   updateState(state, id, {
@@ -187,14 +171,14 @@ export const resetProp = (state, {id, prop}) =>
 export const resetResponseProps = (state, {id}) =>
   updateState(state, id, {
     posted: INITIAL_STATE_SINGLE.posted,
-    received: INITIAL_STATE_SINGLE.received,
     updated: INITIAL_STATE_SINGLE.updated,
+    received: INITIAL_STATE_SINGLE.received,
     deleted: INITIAL_STATE_SINGLE.deleted,
-    error: INITIAL_STATE_SINGLE.error,
+    errors: INITIAL_STATE_SINGLE.errors,
     responseFromGet: INITIAL_STATE_SINGLE.responseFromGet,
     responseFromPost: INITIAL_STATE_SINGLE.responseFromPost,
-    responseFromUpdate: INITIAL_STATE_SINGLE.responseFromPut,
-    responseFromRemove: INITIAL_STATE_SINGLE.responseFromDelete,
+    responseFromPut: INITIAL_STATE_SINGLE.responseFromPut,
+    responseFromDelete: INITIAL_STATE_SINGLE.responseFromDelete,
   });
 
 /* ------------- Hookup Reducers To Types ------------- */
@@ -203,6 +187,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.REGISTER]: register,
 
   [Types.GET]: get,
+  [Types.GET_LATEST]: get,
   [Types.GET_SUCCEEDED]: getSucceeded,
   [Types.GET_FAILED]: getFailed,
 
@@ -214,11 +199,9 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.PUT_SUCCEEDED]: putSucceeded,
   [Types.PUT_FAILED]: putFailed,
 
-  [Types.DELETE]: remove,
-  [Types.DELETE_SUCCEEDED]: removeSucceeded,
-  [Types.DELETE_FAILED]: removeFailed,
-
-  [Types.UPDATE]: update,
+  [Types.DELETE]: deleted,
+  [Types.DELETE_SUCCEEDED]: deleteSucceeded,
+  [Types.DELETE_FAILED]: deleteFailed,
 
   [Types.RESET]: reset,
   [Types.RESET_PROP]: resetProp,

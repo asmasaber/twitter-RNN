@@ -3,31 +3,27 @@ import {put, call} from 'redux-saga/effects';
 import AuthActions from '~/Redux/Actions/Auth';
 
 import storage from '~/Services/localStorage';
-import Api from '~/Services/API';
+
+import StartApp from '~/Navigation';
+
+const AUTH_TOKEN_KEY = 'token';
 
 export default {
   *getToken() {
-    const token = yield call(storage.get, 'token');
+    const token = yield call(storage.get, AUTH_TOKEN_KEY);
     if (token) {
-      yield put(AuthActions.getTokenSuccess(token));
+      yield put(AuthActions.setToken(token));
     } else {
       yield put(AuthActions.getTokenFailure());
     }
   },
-  *login({data}) {
-    const res = yield call(Api.login, data);
-    if (res.ok) {
-      yield put(AuthActions.loginSuccess(res.data.token));
-    } else {
-      yield put(AuthActions.loginFailure(res.data.error));
-    }
+
+  *setToken({token}) {
+    yield call(storage.set, AUTH_TOKEN_KEY, token);
   },
-  *signup({data}) {
-    const res = yield call(Api.signup, data);
-    if (res.ok) {
-      yield put(AuthActions.signupSuccess(res.data.token));
-    } else {
-      yield put(AuthActions.signupFailure(res.data.error));
-    }
+
+  *logout() {
+    yield storage.remove(AUTH_TOKEN_KEY);
+    StartApp();
   },
 };

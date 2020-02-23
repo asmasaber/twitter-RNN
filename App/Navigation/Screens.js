@@ -1,69 +1,38 @@
+/* eslint-disable prettier/prettier */
 import {Navigation} from 'react-native-navigation';
 
 import Loading from '~/Contianers/Auth/Loading';
 import Login from '~/Contianers/Auth/Login';
 import Signup from '~/Contianers/Auth/Signup';
-import SignupTerms from '~/Contianers/Auth/Signup/Terms';
+import Terms from '~/Contianers/Auth/Signup/Terms';
 
-import Drawer from '~/Components/Form/Layout/Drawer';
-import TopBar from '~/Components/Form/Layout/TopBar';
-import RightButton from '~/Components/Form/Layout/RightButton';
-import LoadingIndicator from '~/Components/Form/Layout/Loading';
+import SideMenu from '~/Components/Layout/Drawer';
+import TopBar from '~/Components/Layout/TopBar';
+import RightButton from '~/Components/Layout/RightButton';
+import LogoutButton from '~/Components/Layout/LogoutButton';
+import SaveButton from '~/Components/Layout/SaveButton';
+import SideMenuButton from '~/Components/Layout/DrawerButton';
 import Feeds from '~/Contianers/App/Feeds';
-import DM from '~/Contianers/App/Feeds/DM';
-import Search from '~/Contianers/App/Feeds/Search';
-import Notifications from '~/Contianers/App/Feeds/Notifications';
+import Profile from '~/Contianers/App/Profile';
+import BirthDate from '~/Contianers/App/Profile/BirthDate';
 
-import {Provider} from 'react-redux';
-
-import {store} from '~/Redux/CreateStore';
+import withStore from '~/Hocs/withStore';
 
 export default () => {
-  Navigation.registerComponentWithRedux(
-    'navigation.twitter.Loading',
-    () => Loading,
-    Provider,
-    store,
-  );
+  Navigation.registerComponent('Auth.TopBar', () => TopBar);
+  Navigation.registerComponent('Navigation.TopBar.Signup', () => RightButton);
+  Navigation.registerComponent('Navigation.TopBar.Logout', withStore(LogoutButton));
+  Navigation.registerComponent('Navigation.TopBar.Save', () => SaveButton);
 
-  Navigation.registerComponent('navigation.twitter.topBar', () => TopBar);
-  Navigation.registerComponent(
-    'navigation.twitter.LoadingIndicator',
-    () => LoadingIndicator,
-  );
+  Navigation.registerComponent('Navigation.SideMenu', () => SideMenu);
+  Navigation.registerComponent('Navigation.SideMenu.Button', () => SideMenuButton);
 
-  Navigation.registerComponent(
-    'navigation.twitter.RightButton',
-    () => RightButton,
-  );
+  Navigation.registerComponent('Auth.Check', withStore(Loading));
+  Navigation.registerComponent('Auth.Login', withStore(Login));
+  Navigation.registerComponent('Auth.Signup', withStore(Signup));
+  Navigation.registerComponent('Auth.Terms', withStore(Terms));
 
-  Navigation.registerComponentWithRedux(
-    'navigation.twitter.Login',
-    () => Login,
-    Provider,
-    store,
-  );
-
-  Navigation.registerComponentWithRedux(
-    'navigation.twitter.SignupScreen',
-    () => Signup,
-    Provider,
-    store,
-  );
-
-  Navigation.registerComponentWithRedux(
-    'navigation.twitter.SignupTermsScreen',
-    () => SignupTerms,
-    Provider,
-    store,
-  );
-
-  Navigation.registerComponent('navigation.twitter.Drawer', () => Drawer);
-  Navigation.registerComponent('navigation.twitter.FeedsScreen', () => Feeds);
-  Navigation.registerComponent('navigation.twitter.SearchScreen', () => Search);
-  Navigation.registerComponent('navigation.twitter.DMScreen', () => DM);
-  Navigation.registerComponent(
-    'navigation.twitter.NotificationsScreen',
-    () => Notifications,
-  );
+  Navigation.registerComponent('App.Feeds', withStore(Feeds));
+  Navigation.registerComponent('App.Profile', withStore(Profile));
+  Navigation.registerComponent('App.Profile.BirthDate', withStore(BirthDate));
 };

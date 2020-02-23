@@ -6,16 +6,11 @@ import Immutable from 'seamless-immutable';
 const {Types, Creators} = createActions(
   {
     getToken: null,
-    getTokenSuccess: ['data'],
-    getTokenFailure: ['error'],
+    getTokenFailure: null,
 
-    login: ['data'],
-    loginSuccess: ['data'],
-    loginFailure: ['error'],
+    setToken: ['token'],
 
-    signup: ['data'],
-    signupSuccess: ['data'],
-    signupFailure: ['error'],
+    logout: null,
 
     reset: null,
   },
@@ -40,37 +35,11 @@ export const INITIAL_STATE = Immutable({
 
 export const getToken = state => state.merge({loading: true});
 
-export const getTokenSuccess = (state, {data}) =>
-  state.merge({
-    loading: false,
-    token: data,
-  });
-
 export const getTokenFailure = state => state.merge({loading: false});
 
-export const login = state => state.merge({loading: true, error: null});
+export const setToken = (state, {token}) => state.merge({token, loading: true});
 
-export const loginSuccess = (state, {data}) =>
-  state.merge({
-    loading: false,
-    error: null,
-    token: data,
-  });
-
-export const loginFailure = (state, {error}) =>
-  state.merge({loading: false, error});
-
-export const signup = state => state.merge({loading: true, error: null});
-
-export const signupSuccess = (state, {data}) =>
-  state.merge({
-    loading: false,
-    error: null,
-    token: data,
-  });
-
-export const signupFailure = (state, {error}) =>
-  state.merge({loading: false, error});
+export const logout = state => state.merge({token: null});
 
 export const reset = () => INITIAL_STATE;
 
@@ -78,14 +47,11 @@ export const reset = () => INITIAL_STATE;
 
 export const reducer = createReducer(INITIAL_STATE, {
   [Types.GET_TOKEN]: getToken,
-  [Types.GET_TOKEN_SUCCESS]: getTokenSuccess,
   [Types.GET_TOKEN_FAILURE]: getTokenFailure,
 
-  [Types.LOGIN]: login,
-  [Types.LOGIN_SUCCESS]: loginSuccess,
-  [Types.LOGIN_FAILURE]: loginFailure,
+  [Types.SET_TOKEN]: setToken,
 
-  [Types.SIGNUP]: signup,
-  [Types.SIGNUP_SUCCESS]: signupSuccess,
-  [Types.SIGNUP_FAILURE]: signupFailure,
+  [Types.LOGOUT]: logout,
+
+  [Types.RESET]: reset,
 });

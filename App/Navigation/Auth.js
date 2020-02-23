@@ -9,30 +9,29 @@ export default () => {
         children: [
           {
             component: {
-              name: 'navigation.twitter.Login',
+              name: 'Auth.Login',
             },
           },
-          // {
-          //   component: {
-          //     name: 'navigation.twitter.SignupScreen',
-          //   },
-          // },
-          // {
-          //   component: {
-          //     name: 'navigation.twitter.SignupTermsScreen',
-          //   },
-          // },
         ],
         options: {
+          layout: {
+            backgroundColor: 'white',
+          },
+
+          modalPresentationStyle: 'none',
+          overlay: {
+            interceptTouchOutside: true,
+            handleKeyboardEvents: true,
+          },
           topBar: {
             visible: true,
-            elevation: 0,
+            hideOnScroll: true,
             noBorder: true,
             rightButtons: [
               {
-                id: 'navigation.twitter.RightButton',
+                id: 'Navigation.TopBar.Signup',
                 component: {
-                  name: 'navigation.twitter.RightButton',
+                  name: 'Navigation.TopBar.Signup',
                   passProps: {
                     rootId: 'authStack',
                   },
@@ -41,9 +40,13 @@ export default () => {
             ],
             title: {
               component: {
-                name: 'navigation.twitter.topBar',
-                aligment: 'center',
+                name: 'Auth.TopBar',
               },
+            },
+            headerTitleStyle: {
+              textAlign: 'center',
+
+              flex: 1,
             },
             backButton: {
               color: Colors.primary,

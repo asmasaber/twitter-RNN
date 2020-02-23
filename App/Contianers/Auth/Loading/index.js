@@ -21,19 +21,22 @@ class Loading extends React.Component {
     Navigation.events().bindComponent(this);
   }
 
-  componentDidAppear() {
-    setTimeout(() => {
-      this.props.getToken();
-      if (this.props.auth.token) {
+  componentDidMount() {
+    this.props.getToken();
+  }
+
+  componentDidUpdate(prevProps) {
+    const loading = this.props.loading;
+    const token = this.props.auth.token;
+    const prevLoading = prevProps.auth.loading;
+
+    if (!loading && loading !== prevLoading) {
+      if (token) {
         StartApp();
       } else {
         StartAuth();
       }
-    }, 5000);
-  }
-
-  componentDidDisappear() {
-    this.props.reset();
+    }
   }
 
   render() {

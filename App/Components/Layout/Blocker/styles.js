@@ -7,8 +7,10 @@ export default StyleSheet.create({
     backgroundColor: 'black',
     opacity: 0.6,
     justifyContent: 'center',
-
     alignItems: 'center',
+
+    position: 'absolute',
+    top: 0,
   },
   container: {
     backgroundColor: 'white',

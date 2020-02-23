@@ -2,15 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import get from 'lodash/get';
-import defaults from 'lodash/defaults';
 
 import EntityActions from '~/Redux/Actions/Entity';
 
 export default (Configs = {}) => {
-  const {storeId, autoRegister} = defaults(Configs, {
-    storeId: null,
-    autoRegister: true,
-  });
+  const {storeId} = Configs;
 
   // If module not found return same component
   if (!storeId) {
@@ -20,6 +16,14 @@ export default (Configs = {}) => {
   // Return Enhanced Component
   return Component => {
     class EntityComponent extends React.Component {
+      static propTypes = {
+        getLatest: PropTypes.func,
+      };
+
+      static defaultProps = {
+        getLatest() {},
+      };
+
       get storeId() {
         return storeId;
       }
@@ -27,7 +31,7 @@ export default (Configs = {}) => {
       get store() {
         const {entityStore} = this.props;
 
-        return get(entityStore, `byId.${this.storeId}`, null);
+        return get(entityStore, `byId.${this.storeId}`, {});
       }
 
       get entityStore() {
@@ -67,13 +71,14 @@ export default (Configs = {}) => {
           this.component.entityDidPosted(...reset);
       }
 
-      entityDidPut(...reset) {
-        this.component.entityDidPut && this.component.entityDidPut(...reset);
+      entityDidUpdated(...reset) {
+        this.component.entityDidUpdated &&
+          this.component.entityDidUpdated(...reset);
       }
 
-      entityDidDeleted(...reset) {
-        this.component.entityDidDeleted &&
-          this.component.entityDidDeleted(...reset);
+      entityDidDelete(...reset) {
+        this.component.entityDidDelete &&
+          this.component.entityDidDelete(...reset);
       }
 
       entityDidCatch(...reset) {
@@ -87,13 +92,15 @@ export default (Configs = {}) => {
       }
 
       register() {
-        if (!this.store) {
-          this.props.register(this.storeId);
-        }
+        this.props.register(this.storeId);
       }
 
       get = data => {
         this.props.get(this.storeId, data);
+      };
+
+      getLatest = data => {
+        this.props.getLatest(this.storeId, data);
       };
 
       post = data => {
@@ -120,11 +127,13 @@ export default (Configs = {}) => {
         this.props.resetResponseProps(this.resetProp);
       }
 
-      isLoading = () => this.store.loading;
+      isLoading = () => {
+        return this.store.loading;
+      };
 
       componentDidMount() {
-        if (autoRegister) {
-          this.register();
+        if (!this.store) {
+          this.props.register(this.storeId);
         }
       }
 
@@ -132,65 +141,65 @@ export default (Configs = {}) => {
         const {
           received,
           posted,
-          updated,
           deleted,
-          error,
+          updated,
+          errors,
           responseFromGet,
           responseFromPost,
-          responseFromUpdate,
-          responseFromRemove,
-        } = defaults(this.store, {});
+          responseFromPut,
+          responseFromDelete,
+        } = this.store;
 
-        if (received && !error) {
+        if (received && !errors) {
           this.entityDidReceived(responseFromGet);
           this.props.resetProp(this.storeId, 'received');
         }
 
-        if (posted && !error) {
+        if (posted && !errors) {
           this.entityDidPosted(responseFromPost);
           this.props.resetProp(this.storeId, 'posted');
         }
 
-        if (updated && !error) {
-          this.entityDidPut(responseFromUpdate);
-          this.props.resetProp(this.storeId, 'updated');
-        }
-
-        if (deleted && !error) {
-          this.entityDidDeleted(responseFromRemove);
+        if (deleted && !errors) {
+          this.entityDidPosted(responseFromDelete);
           this.props.resetProp(this.storeId, 'deleted');
         }
 
-        if (received && error) {
-          this.entityDidCatch(error);
+        if (updated && !errors) {
+          this.entityDidUpdated(responseFromPut);
+          this.props.resetProp(this.storeId, 'updated');
+        }
+
+        if (received && errors) {
+          this.entityDidCatch(errors);
           this.props.resetProp(this.storeId, 'received');
         }
 
-        if (posted && error) {
-          this.entityDidCatch(error);
+        if (posted && errors) {
+          this.entityDidCatch(errors);
           this.props.resetProp(this.storeId, 'posted');
         }
 
-        if (updated && error) {
-          this.entityDidCatch(error);
-          this.props.resetProp(this.storeId, 'updated');
+        if (deleted && errors) {
+          this.entityDidCatch(errors);
+          this.props.resetProp(this.storeId, 'deleted');
         }
 
-        if (deleted && error) {
-          this.entityDidCatch(error);
-          this.props.resetProp(this.storeId, 'deleted');
+        if (updated && errors) {
+          this.entityDidCatch(errors);
+          this.props.resetProp(this.storeId, 'updated');
         }
       }
 
       componentWillUnmount() {
-        if (this.store) {
-          // this.props.resetProp(this.storeId, 'loading');
-          // this.props.resetProp(this.storeId, 'errors');
+        if (this.storeId && this.store) {
+          this.props.resetProp(this.storeId, 'loading');
+          this.props.resetProp(this.storeId, 'errors');
         }
       }
 
       render() {
-        if (this.store || !autoRegister) {
+        if (this.storeId && this.store) {
           return (
             <Component
               ref={ref => (this.component = ref)}
@@ -205,13 +214,13 @@ export default (Configs = {}) => {
     }
 
     EntityComponent.propTypes = {
-      entityStore: PropTypes.object,
+      delete: PropTypes.func,
 
-      register: PropTypes.func,
+      entityStore: PropTypes.object,
       get: PropTypes.func,
       post: PropTypes.func,
       put: PropTypes.func,
-      delete: PropTypes.func,
+      register: PropTypes.func,
 
       reset: PropTypes.func,
       resetProp: PropTypes.func,

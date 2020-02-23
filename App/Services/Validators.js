@@ -1,43 +1,78 @@
-export const isRequied = (message = 'This field is required.') => ({
-  validate: value => value.trim().length > 0,
-  message,
-});
+import isNaN from 'lodash/isNaN';
 
-export const email = (message = 'Not Filed Email.') => ({
-  validate: value => {
-    console.log('email', value);
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-      `${value ? value.trim() : ''}`,
-    );
+import {Validator} from '~/Components/Form';
+
+export const isRequired = (message = 'Required') =>
+  new Validator({
+    key: 'REQUIRED',
+    message,
+    validator: value =>
+      value === null || value === undefined || isNaN(value)
+        ? false
+        : `${value}`.trim().length > 0,
+  });
+
+export const minLength = (length, message) =>
+  new Validator({
+    key: 'MIN_LENGTH',
+    message: message || `minLength ${length}`,
+    validator: value => `${value}`.length >= length,
+  });
+
+export const maxLength = (length, message) =>
+  new Validator({
+    key: 'MAX_LENGTH',
+    message: message || `maxLength ${length}`,
+    validator: value => `${value}`.length <= length,
+  });
+
+export const exactLength = (length, message) =>
+  new Validator({
+    key: 'EXACT_LENGTH',
+    message: message || `exactLength ${length}`,
+    validator: value => `${value}`.length === length,
+  });
+
+export const onlyNumbers = (message = 'onlyNumbers') =>
+  new Validator({
+    key: 'ONLY_NUMBERS',
+    message,
+    validator: value => /^\d*$/gi.test(`${value}`),
+  });
+
+export const matches = (otherValue, message = 'matches') =>
+  new Validator({
+    key: 'MATCHES',
+    message,
+    validator: value => value === otherValue(),
+  });
+
+export const emailAddress = (message = 'emailAddress') =>
+  new Validator({
+    key: 'EMAIL',
+    message,
+    validator: value =>
+      /^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,64}$/gi.test(
+        `${value ? value.trim() : ''}`,
+      ),
+  });
+
+export const isKSAPhoneNumber = (message = 'phoneNumber') =>
+  new Validator({
+    key: 'PHONE',
+    message,
+    validator: value =>
+      /^(009665|9665|\+9665|05|5)(5|0|3|6|4|9|1|8|7)([0-9]{7})$/gi.test(
+        `${value ? value.trim() : ''}`,
+      ),
+  });
+
+export const arrayValidators = {
+  minLength(length, message) {
+    return new Validator({
+      key: 'ARRAY_MIN_LENGTH',
+      message: message || `minLength ${length}`,
+      validator: items => items.length >= length,
+    });
   },
-
-  message,
-});
-
-export const minLength = (
-  length,
-  message = `Min. Length should be ${length}`,
-) => ({
-  validate: value => value.length >= length,
-  message,
-});
-
-export const maxLength = (
-  length,
-  message = `Max. Length should be ${length}`,
-) => ({
-  validate: value => value.length <= length,
-  message,
-});
-
-export const password = (
-  message = 'password should contain at least one (1) character from three (3) of the following categories: Uppercase letter (A-Z) Lowercase letter (a-z) Digit (0-9), Min Length 4 characters and Max 8 ',
-) => ({
-  validate: value => /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/.test(value),
-  message,
-});
-
-export const matches = (xValue, message = 'Not Matched') => ({
-  validate: value => xValue() === value,
-  message,
-});
+};

@@ -8,7 +8,7 @@ export default props => {
     <View style={styles.ovelLay}>
       <View style={styles.container}>
         <ActivityIndicator size="large" color={Colors.primary} />
-        <Text style={styles.loadingText}>{`${props.text}...`}</Text>
+        <Text style={styles.loadingText}>{'Loading ...'}</Text>
       </View>
     </View>
   );

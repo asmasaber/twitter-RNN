@@ -9,6 +9,11 @@ export default StyleSheet.create({
     borderColor: '#e6ecf0',
     borderBottomWidth: 1,
     height: 30,
+    marginTop: 3,
+  },
+  multiline: {
+    height: 80,
+    textAlignVertical: 'top',
   },
   title: {
     color: '#657786',

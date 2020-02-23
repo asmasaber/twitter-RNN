@@ -6,6 +6,9 @@ const storage = {
   set: async (key, value) => {
     await AsyncStorage.setItem(key, value);
   },
+  remove: async key => {
+    await AsyncStorage.removeItem(key);
+  },
 };
 
 export default storage;

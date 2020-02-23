@@ -8,17 +8,40 @@ import {navigation} from '~/Navigation/Utils';
 import styles from './styles';
 
 export default class Drawer extends React.Component {
+  componentDidMount() {
+    this.navigationEventListener = Navigation.events().bindComponent(this);
+  }
+
+  navigationEventListener = Navigation.events().registerNavigationButtonPressedListener(
+    ({buttonId}) => {
+      const {componentId} = this.props;
+
+      if (buttonId === 'Navigation.SideMenu.Button') {
+        Navigation.mergeOptions(componentId, {
+          sideMenu: {
+            left: {
+              visible: true,
+            },
+          },
+        });
+      }
+    },
+  );
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.top}>
           <TouchableOpacity
-            onPress={() =>
-              navigation.push(
-                this.props.componentId,
-                'navigation.twitter.ProfileScreen',
-              )
-            }>
+            onPress={() => {
+              Navigation.mergeOptions('Navigation.SideMenu', {
+                sideMenu: {
+                  left: {
+                    visible: false,
+                  },
+                },
+              });
+              navigation.push('MainApp', 'App.Profile');
+            }}>
             <Image
               source={require('~/assets/images/avatar.jpeg')}
               style={styles.photo}

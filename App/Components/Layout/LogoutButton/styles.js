@@ -16,7 +16,6 @@ export default StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
-    paddingTop: 8,
     paddingRight: 15,
     backgroundColor: 'white',
   },
