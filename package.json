@@ -20,7 +20,7 @@
     "babel-plugin-root-import": "^6.4.1",
     "i": "^0.3.6",
     "install": "^0.13.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.21",
     "mobx": "^5.15.1",
     "mobx-react": "^6.1.4",
     "moment": "^2.24.0",
